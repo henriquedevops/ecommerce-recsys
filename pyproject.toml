@@ -1,0 +1,21 @@
+[project]
+name = "ecommerce-recsys"
+version = "0.1.0"
+description = "Sistema de recomendação para e-commerce — Tech Challenge Fase 02 (FIAP ML Engineering)"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = []
+
+[tool.ruff]
+line-length = 88
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "UP", "B"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["recsys"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
