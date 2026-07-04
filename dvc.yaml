@@ -1,0 +1,22 @@
+stages:
+  preprocess:
+    cmd: python -m recsys.data.preprocess
+    deps:
+      - data/raw/ml-1m/ratings.dat
+      - src/recsys/data/preprocess.py
+    outs:
+      - data/interim/clean.parquet
+
+  feature_eng:
+    cmd: python -m recsys.features.build
+    deps:
+      - data/interim/clean.parquet
+      - src/recsys/features/build.py
+      - src/recsys/features/strategies.py
+    params:
+      - featurize.implicit_threshold
+    outs:
+      - data/processed/train.parquet
+      - data/processed/val.parquet
+      - data/processed/test.parquet
+      - data/processed/meta.json

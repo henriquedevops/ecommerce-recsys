@@ -1,0 +1,18 @@
+# Hiperparâmetros do pipeline — rastreados pelo DVC (dvc.yaml -> params:).
+# Mudar um valor aqui invalida só os stages que dependem dele no próximo `dvc repro`.
+
+featurize:
+  implicit_threshold: 4.0 # rating >= threshold vira interação positiva (label 1)
+
+train:
+  embedding_dim: 64
+  hidden_dims: [128, 64]
+  dropout: 0.3
+  batch_size: 1024
+  learning_rate: 0.001
+  epochs: 8
+  patience: 2 # early stopping: épocas sem melhora no NDCG@10 de validação
+  negatives_per_positive: 4 # amostragem de negativos por positivo no treino
+
+evaluate:
+  top_k: 10

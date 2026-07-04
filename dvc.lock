@@ -1,0 +1,53 @@
+schema: '2.0'
+stages:
+  preprocess:
+    cmd: python -m recsys.data.preprocess
+    deps:
+    - path: data/raw/ml-1m/ratings.dat
+      hash: md5
+      md5: a89aa3591bc97d6d4e0c89459ff39362
+      size: 24594131
+    - path: src/recsys/data/preprocess.py
+      hash: md5
+      md5: 1a770e494e6276ee507f8870b637dac9
+      size: 2490
+    outs:
+    - path: data/interim/clean.parquet
+      hash: md5
+      md5: 793feb171c1182587f666e419ec97b2b
+      size: 5356819
+  feature_eng:
+    cmd: python -m recsys.features.build
+    deps:
+    - path: data/interim/clean.parquet
+      hash: md5
+      md5: 793feb171c1182587f666e419ec97b2b
+      size: 5356819
+    - path: src/recsys/features/build.py
+      hash: md5
+      md5: 26ec74bb18ac45d9b30d8465405d138d
+      size: 2597
+    - path: src/recsys/features/strategies.py
+      hash: md5
+      md5: e65bdbd64c93a7ffdfc9abd30514237d
+      size: 2555
+    params:
+      params.yaml:
+        featurize.implicit_threshold: 4.0
+    outs:
+    - path: data/processed/meta.json
+      hash: md5
+      md5: 72676cc4a44e2ef1586da23f1ddd8089
+      size: 34
+    - path: data/processed/test.parquet
+      hash: md5
+      md5: 3e2a80e9424df58667a6752437d31112
+      size: 93735
+    - path: data/processed/train.parquet
+      hash: md5
+      md5: 9af2b00adc0ebb204a8ffac22518eb82
+      size: 2957042
+    - path: data/processed/val.parquet
+      hash: md5
+      md5: 3c48e8eeb5d43ac58db4e304f72ffb75
+      size: 93559
