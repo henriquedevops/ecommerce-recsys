@@ -48,3 +48,33 @@ class Preprocessor(ABC):
             DataFrame transformado.
         """
         return self.fit(interactions).transform(interactions)
+
+
+class ImplicitEncoder(Preprocessor):
+    """Converte ratings explícitos (1-5) em feedback implícito binário.
+
+    Formulação do projeto (implicit/Top-N): ratings >= ``threshold`` viram
+    interação positiva (``label = 1.0``); os demais são descartados. A
+    amostragem de negativos acontece no estágio de feature engineering.
+    """
+
+    def __init__(self, threshold: float = 4.0) -> None:
+        self.threshold = threshold
+
+    def fit(self, interactions: pd.DataFrame) -> ImplicitEncoder:
+        """Sem parâmetros a aprender; retorna o próprio encoder."""
+        return self
+
+    def transform(self, interactions: pd.DataFrame) -> pd.DataFrame:
+        """Filtra positivos (``rating >= threshold``) e cria a coluna ``label``.
+
+        Args:
+            interactions: DataFrame com a coluna ``rating`` explícita.
+
+        Returns:
+            DataFrame apenas com interações positivas e ``label = 1.0``,
+            sem a coluna ``rating``.
+        """
+        positives = interactions[interactions["rating"] >= self.threshold].copy()
+        positives["label"] = 1.0
+        return positives.drop(columns=["rating"])
