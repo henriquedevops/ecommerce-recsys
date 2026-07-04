@@ -1,0 +1,14 @@
+# Tudo que NÃO deve entrar no build context (imagem pequena + build rápido)
+.venv/
+.git/
+.dvc/cache/
+data/
+models/
+mlruns/
+reports/
+notebooks/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.env
