@@ -11,12 +11,11 @@ htmlcov/
 # Ambiente (só .env.example vai para o git)
 .env
 
-# Dados e artefatos — versionados por DVC a partir da Etapa 3
-data/*
-!data/.gitkeep
-models/*
-!models/.gitkeep
-reports/
+# Dados e artefatos — conteúdo versionado pelo DVC (os ponteiros .dvc vão no git)
+data/raw/ml-1m/
+data/interim/
+data/processed/
+models/*.pt
 
 # MLflow local
 mlruns/
