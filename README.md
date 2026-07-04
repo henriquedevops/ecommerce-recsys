@@ -10,7 +10,7 @@ Rede neural de embeddings + MLP (PyTorch) treinada sobre o **MovieLens 1M** com 
 ## Status
 
 - [x] Etapa 1 — Clean Code e Estrutura (interfaces, Factory/Strategy, ruff, pre-commit)
-- [ ] Etapa 2 — Ambiente e Dependências (uv, `uv.lock`, `.env`, Pydantic Settings)
+- [x] Etapa 2 — Ambiente e Dependências (uv, `uv.lock`, `.env`, Pydantic Settings)
 - [ ] Etapa 3 — Containerização e Versionamento (Docker, DVC, MLflow tracking)
 - [ ] Etapa 4 — Rede Neural, Registry e Entrega
 
@@ -35,12 +35,36 @@ data/ · models/      # versionados por DVC (fora do git)
 - **Strategy** (`recsys.features.strategies.Preprocessor`) — pré-processadores intercambiáveis;
   `ImplicitEncoder` converte ratings 1–5 em feedback implícito binário (positivo se ≥ 4).
 
+## Instalação do zero
+
+Pré-requisito único: [uv](https://docs.astral.sh/uv/) instalado
+(`irm https://astral.sh/uv/install.ps1 | iex` no Windows, `curl -LsSf https://astral.sh/uv/install.sh | sh` no Linux/macOS).
+
+```bash
+git clone https://github.com/henriquedevops/ecommerce-recsys.git
+cd ecommerce-recsys
+uv sync --frozen                          # cria .venv e instala EXATAMENTE o uv.lock
+uv run python scripts/validate_env.py     # deve terminar com "[OK] Ambiente validado."
+uv run pytest -q                          # roda a suíte de testes
+```
+
+O `uv sync` baixa o Python 3.11 automaticamente se necessário (`.python-version`) e instala o
+**torch CPU-only** via índice dedicado (`[tool.uv.index]` no `pyproject.toml`) — sem os ~2 GB de
+wheels CUDA. `--frozen` garante que a instalação usa exatamente as versões travadas no `uv.lock`.
+
+### Configuração (`.env`)
+
+Todas as variáveis têm defaults funcionais em `src/recsys/config.py` (Pydantic Settings).
+Para sobrescrever, copie o exemplo e edite:
+
+```bash
+cp .env.example .env
+```
+
 ## Desenvolvimento
 
 ```bash
-uvx ruff check src tests   # lint (zero erros é requisito)
-uvx pytest -q              # testes
-pre-commit install         # hooks de lint/format a cada commit
+uv run ruff check src tests scripts   # lint (zero erros é requisito)
+uv run pytest -q                      # testes
+uv run pre-commit install             # hooks de lint/format a cada commit
 ```
-
-> A instalação completa do ambiente (`uv sync` + `uv.lock`) chega na Etapa 2.
