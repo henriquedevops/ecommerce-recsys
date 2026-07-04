@@ -51,3 +51,83 @@ stages:
       hash: md5
       md5: 3c48e8eeb5d43ac58db4e304f72ffb75
       size: 93559
+  train:
+    cmd: python -m recsys.models.train
+    deps:
+    - path: data/processed/meta.json
+      hash: md5
+      md5: 72676cc4a44e2ef1586da23f1ddd8089
+      size: 34
+    - path: data/processed/train.parquet
+      hash: md5
+      md5: 9af2b00adc0ebb204a8ffac22518eb82
+      size: 2957042
+    - path: data/processed/val.parquet
+      hash: md5
+      md5: 3c48e8eeb5d43ac58db4e304f72ffb75
+      size: 93559
+    - path: src/recsys/evaluation/metrics.py
+      hash: md5
+      md5: 6bea40973efb693cd887fa7cf82c9e66
+      size: 4075
+    - path: src/recsys/models/mlp.py
+      hash: md5
+      md5: f05b4b77892255cec54569247e7876ab
+      size: 1659
+    - path: src/recsys/models/train.py
+      hash: md5
+      md5: 975200fdd0f205cbecdaacf9c843b40f
+      size: 7037
+    params:
+      params.yaml:
+        train:
+          embedding_dim: 64
+          hidden_dims:
+          - 128
+          - 64
+          dropout: 0.3
+          batch_size: 1024
+          learning_rate: 0.001
+          epochs: 8
+          patience: 2
+          negatives_per_positive: 4
+    outs:
+    - path: models/recsys.pt
+      hash: md5
+      md5: 258779ae673ed6ecb76dc5c3975a7761
+      size: 2597823
+  evaluate:
+    cmd: python -m recsys.evaluation.evaluate
+    deps:
+    - path: data/processed/test.parquet
+      hash: md5
+      md5: 3e2a80e9424df58667a6752437d31112
+      size: 93735
+    - path: data/processed/train.parquet
+      hash: md5
+      md5: 9af2b00adc0ebb204a8ffac22518eb82
+      size: 2957042
+    - path: data/processed/val.parquet
+      hash: md5
+      md5: 3c48e8eeb5d43ac58db4e304f72ffb75
+      size: 93559
+    - path: models/recsys.pt
+      hash: md5
+      md5: 258779ae673ed6ecb76dc5c3975a7761
+      size: 2597823
+    - path: src/recsys/evaluation/evaluate.py
+      hash: md5
+      md5: f7e3f9b529547b4eb4c9be1d4380097b
+      size: 2581
+    - path: src/recsys/evaluation/metrics.py
+      hash: md5
+      md5: 6bea40973efb693cd887fa7cf82c9e66
+      size: 4075
+    params:
+      params.yaml:
+        evaluate.top_k: 10
+    outs:
+    - path: reports/metrics.json
+      hash: md5
+      md5: 7782fed359e8f27cdd1c8a899a91d7cc
+      size: 161

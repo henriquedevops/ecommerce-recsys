@@ -20,3 +20,32 @@ stages:
       - data/processed/val.parquet
       - data/processed/test.parquet
       - data/processed/meta.json
+
+  train:
+    cmd: python -m recsys.models.train
+    deps:
+      - data/processed/train.parquet
+      - data/processed/val.parquet
+      - data/processed/meta.json
+      - src/recsys/models/mlp.py
+      - src/recsys/models/train.py
+      - src/recsys/evaluation/metrics.py
+    params:
+      - train
+    outs:
+      - models/recsys.pt
+
+  evaluate:
+    cmd: python -m recsys.evaluation.evaluate
+    deps:
+      - models/recsys.pt
+      - data/processed/train.parquet
+      - data/processed/val.parquet
+      - data/processed/test.parquet
+      - src/recsys/evaluation/evaluate.py
+      - src/recsys/evaluation/metrics.py
+    params:
+      - evaluate.top_k
+    metrics:
+      - reports/metrics.json:
+          cache: false
