@@ -1,0 +1,21 @@
+services:
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:v2.22.5 # mesma versão do client (uv.lock)
+    command: mlflow server --host 0.0.0.0 --port 5000
+    ports:
+      - "5000:5000"
+    volumes:
+      - mlflow-data:/mlruns
+
+  train:
+    build: .
+    depends_on:
+      - mlflow
+    environment:
+      MLFLOW_TRACKING_URI: http://mlflow:5000 # sobrescreve o default local do Settings
+    volumes:
+      - ./data:/app/data # dados processados pelo `dvc repro` no host
+      - ./models:/app/models # checkpoint sai do container para o host
+
+volumes:
+  mlflow-data:
