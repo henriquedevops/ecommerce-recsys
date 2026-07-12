@@ -76,8 +76,8 @@ stages:
       size: 1659
     - path: src/recsys/models/train.py
       hash: md5
-      md5: 975200fdd0f205cbecdaacf9c843b40f
-      size: 7037
+      md5: 3835a0f5ceff643a970fc233a38f27ae
+      size: 7046
     params:
       params.yaml:
         train:
@@ -94,7 +94,7 @@ stages:
     outs:
     - path: models/recsys.pt
       hash: md5
-      md5: 258779ae673ed6ecb76dc5c3975a7761
+      md5: b180b9b86fbd7a456b0952da5ed4b549
       size: 2597823
   evaluate:
     cmd: python -m recsys.evaluation.evaluate
@@ -113,7 +113,7 @@ stages:
       size: 93559
     - path: models/recsys.pt
       hash: md5
-      md5: 258779ae673ed6ecb76dc5c3975a7761
+      md5: b180b9b86fbd7a456b0952da5ed4b549
       size: 2597823
     - path: src/recsys/evaluation/evaluate.py
       hash: md5
@@ -129,5 +129,5 @@ stages:
     outs:
     - path: reports/metrics.json
       hash: md5
-      md5: 7782fed359e8f27cdd1c8a899a91d7cc
+      md5: 3a51f24e2dbd451170d3f1b1a8c5333a
       size: 161
