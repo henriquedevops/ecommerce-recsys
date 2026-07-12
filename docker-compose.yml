@@ -1,7 +1,12 @@
 services:
   mlflow:
     image: ghcr.io/mlflow/mlflow:v2.22.4 # client é 2.22.5 (uv.lock), mas 2.22.5 não tem imagem publicada
-    command: mlflow server --host 0.0.0.0 --port 5000
+    # backend sqlite: o Model Registry (Staging/Production) exige store com banco;
+    # o file store puro não suporta registro de modelos.
+    command: >
+      mlflow server --host 0.0.0.0 --port 5000
+      --backend-store-uri sqlite:////mlruns/mlflow.db
+      --artifacts-destination /mlruns/artifacts
     ports:
       - "5000:5000"
     volumes:
