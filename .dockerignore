@@ -4,6 +4,8 @@
 .dvc/cache/
 data/
 models/
+# exceção: o estágio serve embute o checkpoint na imagem
+!models/recsys.pt
 mlruns/
 reports/
 notebooks/

@@ -13,7 +13,9 @@ services:
       - mlflow-data:/mlruns
 
   train:
-    build: .
+    build:
+      context: .
+      target: runtime # o estágio final (serve) é a API de inferência, não o treino
     depends_on:
       - mlflow
     environment:
