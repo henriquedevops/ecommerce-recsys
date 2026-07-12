@@ -81,21 +81,21 @@ stages:
     params:
       params.yaml:
         train:
-          embedding_dim: 64
+          embedding_dim: 128
           hidden_dims:
+          - 256
           - 128
-          - 64
           dropout: 0.3
           batch_size: 1024
           learning_rate: 0.001
-          epochs: 8
-          patience: 2
+          epochs: 20
+          patience: 3
           negatives_per_positive: 4
     outs:
     - path: models/recsys.pt
       hash: md5
-      md5: b180b9b86fbd7a456b0952da5ed4b549
-      size: 2597823
+      md5: 38b5fc2dceed7c3fc0ca51b387a22cb2
+      size: 5388735
   evaluate:
     cmd: python -m recsys.evaluation.evaluate
     deps:
@@ -113,8 +113,8 @@ stages:
       size: 93559
     - path: models/recsys.pt
       hash: md5
-      md5: b180b9b86fbd7a456b0952da5ed4b549
-      size: 2597823
+      md5: 38b5fc2dceed7c3fc0ca51b387a22cb2
+      size: 5388735
     - path: src/recsys/evaluation/evaluate.py
       hash: md5
       md5: f7e3f9b529547b4eb4c9be1d4380097b
@@ -129,5 +129,5 @@ stages:
     outs:
     - path: reports/metrics.json
       hash: md5
-      md5: 3a51f24e2dbd451170d3f1b1a8c5333a
-      size: 161
+      md5: 94ad2113034982d393b6e6a9775b9428
+      size: 160
