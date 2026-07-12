@@ -111,6 +111,22 @@ docker compose down                  # encerra; runs persistem no volume mlflow-
 > Use `127.0.0.1` (não `localhost`) para acessar o server no Windows — `localhost` pode
 > resolver para IPv6 e não conectar.
 
+## API em Produção (bônus — GCP Cloud Run)
+
+Endpoint público servindo o modelo v1 do Registry (imagem `serve` do Dockerfile):
+
+- Health: `GET https://ecommerce-recsys-1016158003629.us-central1.run.app/health`
+- Recomendação: `GET https://ecommerce-recsys-1016158003629.us-central1.run.app/recommend/{user_idx}?k=10`
+- Swagger UI: https://ecommerce-recsys-1016158003629.us-central1.run.app/docs
+
+```bash
+curl https://ecommerce-recsys-1016158003629.us-central1.run.app/recommend/42?k=5
+# {"user_idx":42,"items":[2203,2162,2651,0,574],"scores":[...]}
+```
+
+Fluxo de deploy: `docker build` (estágio `serve` embute `models/recsys.pt`) →
+`docker push gcr.io/<projeto>/ecommerce-recsys` → `gcloud run deploy` (porta 8080, 1 Gi).
+
 ## Desenvolvimento
 
 ```bash
